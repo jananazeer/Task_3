@@ -46,6 +46,15 @@ export default function AllPerks() {
     
     // This effect depends on [perks], so it re-runs whenever perks changes
   }, [perks]) // Dependency: re-run when perks array changes
+useEffect(() => {
+  loadAllPerks()
+}, [])
+
+useEffect(() => {
+  if (!loading) {
+    loadAllPerks()
+  }
+}, [searchQuery, merchantFilter])
 
   
   async function loadAllPerks() {
@@ -136,6 +145,9 @@ export default function AllPerks() {
                 type="text"
                 className="input"
                 placeholder="Enter perk name..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+
                 
               />
               <p className="text-xs text-zinc-500 mt-1">
@@ -151,6 +163,9 @@ export default function AllPerks() {
               </label>
               <select
                 className="input"
+                value={merchantFilter}
+                onChange={(e) => setMerchantFilter(e.target.value)}
+
                 
               >
                 <option value="">All Merchants</option>
@@ -217,7 +232,7 @@ export default function AllPerks() {
           
           <Link
             key={perk._id}
-           
+            to={`/perks/${perk._id}`}
             className="card hover:shadow-lg transition-shadow cursor-pointer"
           >
             {/* Perk Title */}
